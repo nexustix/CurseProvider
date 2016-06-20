@@ -1,1 +1,1 @@
-# CurseProvider
+# curseprovider
