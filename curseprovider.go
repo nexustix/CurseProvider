@@ -12,10 +12,16 @@ import (
 )
 
 //search => find atoms
-//deps => get dependencies
-//downinfo => get download URL and filename
+// return as URL encoded strings seperated by spaces followed by a Pipe and all Grops seperated by spaces
+// <Provider> <Name> <ID> <Filename> <URL> <RelativePath>|<Group1> <Group2> <Group3>...
 
-// return as URL encoded strings seperated by spaces followed by a Pipe and all Grops seperaded by spaces
+//deps => get dependencies
+// tbd
+
+//downinfo => get download URL and filename
+// tbd
+
+// return as URL encoded strings seperated by spaces followed by a Pipe and all Grops seperated by spaces
 // <Provider> <Name> <ID> <Filename> <URL> <RelativePath>|<Group1> <Group2> <Group3>...
 
 //TODO evaluate (old code)
@@ -76,7 +82,7 @@ func main() {
 			fmt.Printf("%s %s %s %s %s %s|",
 				url.QueryEscape("curse"),                         // Provider
 				url.QueryEscape(getModName(v)),                   // Name
-				url.QueryEscape(urlSegments[len(urlSegments)-1]), //ID
+				url.QueryEscape(urlSegments[len(urlSegments)-2]), //ID
 				url.QueryEscape("N/A"),                           //Filename
 				url.QueryEscape(v.URL),                           //URL (this provider does not provide direct download URLs here)
 				url.QueryEscape("/mods"),                         //RelativePath (install to mod folder)
@@ -94,7 +100,7 @@ func main() {
 		fmt.Printf("<-> depsearch for %s\n", bp.StringAtIndex(2, args))
 
 	case "downinfo":
-		fmt.Printf("<-> depsearch for %s\n", bp.StringAtIndex(2, args))
+		fmt.Printf("<-> downinfo for %s\n", bp.StringAtIndex(2, args))
 
 	}
 	//fmt.Printf("it works !\n")
