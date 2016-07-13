@@ -67,11 +67,14 @@ func main() {
 	groups = append(groups, "curse")
 	groups = append(groups, "minecraft")
 
-	switch bp.StringAtIndex(1, args) {
+	providerAction := bp.StringAtIndex(1, args)
+	providerQuerry := bp.StringAtIndex(2, args)
+
+	switch providerAction {
 
 	case "search":
-		fmt.Printf("<-> search for %s\n", bp.StringAtIndex(2, args))
-		searchPhrase := nxcurse.GetMinecraftModSearchphrase(bp.StringAtIndex(2, args))
+		fmt.Printf("<-> search for %s\n", providerQuerry)
+		searchPhrase := nxcurse.GetMinecraftModSearchphrase(providerQuerry)
 		searchURL := nxduck.GenerateSearchURL(searchPhrase)
 		searchResults := nxduck.GetSearchResultObjects(searchURL)
 		curseResults := nxcurse.GetMinecraftModResults(searchResults)
@@ -87,20 +90,41 @@ func main() {
 				url.QueryEscape(v.URL),                           //URL (this provider does not provide direct download URLs here)
 				url.QueryEscape("/mods"),                         //RelativePath (install to mod folder)
 			)
+			//XXX no URL encoding ?
 			for kk, vv := range groups {
 				if kk == len(groups)-1 {
-					fmt.Println(vv) //last item should not have trailing space character
+					//fmt.Println(vv) //last item should not have trailing space character
+					fmt.Print(vv + "\n") //last item should not have trailing space character
 				} else {
 					fmt.Print(vv + " ")
 				}
 			}
 		}
 
-	case "deps":
-		fmt.Printf("<-> depsearch for %s\n", bp.StringAtIndex(2, args))
+	case "depsearch":
+		//fmt.Printf("<-> depsearch for %s\n", bp.StringAtIndex(2, args))
+		deps := nxcurse.GetDependencies(providerQuerry)
+
+		//fmt.Printf("<-> found %s\n", deps)
+
+		for kk, vv := range deps {
+			if kk == len(deps)-1 {
+				fmt.Print(vv) //last item should not have trailing space character
+			} else {
+				fmt.Print(vv + " ")
+				//fmt.Println(vv)
+			}
+		}
+		fmt.Println()
 
 	case "downinfo":
-		fmt.Printf("<-> downinfo for %s\n", bp.StringAtIndex(2, args))
+		//fmt.Printf("<-> downinfo for %s\n", bp.StringAtIndex(2, args))
+		downinfo := nxcurse.GetCurseDownloads("http://minecraft.curseforge.com/projects/"+bp.StringAtIndex(2, args)+"/files", "1.10")
+		if len(downinfo) >= 1 {
+			//print URL first since URLs are more predictable due to URL encoding
+			fmt.Printf("%s|%s\n", downinfo[0].URL, downinfo[0].Filename)
+
+		}
 
 	}
 	//fmt.Printf("it works !\n")
