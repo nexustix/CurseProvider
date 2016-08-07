@@ -15,7 +15,7 @@ import (
 // return as URL encoded strings seperated by spaces followed by a Pipe and all Grops seperated by spaces
 // <Provider> <Name> <ID> <Filename> <URL> <RelativePath>|<Group1> <Group2> <Group3>...
 
-//deps => get dependencies
+//depsearch => get dependencies
 // tbd
 
 //downinfo => get download URL and filename
@@ -88,7 +88,7 @@ func main() {
 				url.QueryEscape(urlSegments[len(urlSegments)-2]), //ID
 				url.QueryEscape("N/A"),                           //Filename
 				url.QueryEscape(v.URL),                           //URL (this provider does not provide direct download URLs here)
-				url.QueryEscape("/mods"),                         //RelativePath (install to mod folder)
+				url.QueryEscape("mods"),                          //RelativePath (install to mod folder)
 			)
 			//XXX no URL encoding ?
 			for kk, vv := range groups {
