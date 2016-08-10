@@ -86,7 +86,7 @@ func main() {
 				url.QueryEscape("curse"),                         // Provider
 				url.QueryEscape(getModName(v)),                   // Name
 				url.QueryEscape(urlSegments[len(urlSegments)-2]), //ID
-				url.QueryEscape("N/A"),                           //Filename
+				url.QueryEscape(""),                              //Filename
 				url.QueryEscape(v.URL),                           //URL (this provider does not provide direct download URLs here)
 				url.QueryEscape("mods"),                          //RelativePath (install to mod folder)
 			)
@@ -122,7 +122,10 @@ func main() {
 		downinfo := nxcurse.GetCurseDownloads("http://minecraft.curseforge.com/projects/"+bp.StringAtIndex(2, args)+"/files", "1.10")
 		if len(downinfo) >= 1 {
 			//print URL first since URLs are more predictable due to URL encoding
-			fmt.Printf("%s|%s\n", downinfo[0].URL, downinfo[0].Filename)
+
+			tmpFilename := nxcurse.GetFilenameFromDownloadURL(downinfo[0].URL)
+			//XXX overwriting cheap-ish filename
+			fmt.Printf("%s|%s\n", downinfo[0].URL, tmpFilename)
 
 		}
 
